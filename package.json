@@ -6,8 +6,8 @@
   "scripts": {
   "dev": "nodemon src/server.js",
   "start": "node src/server.js",
-  "prestart": "npx sequelize-cli db:migrate --config src/sequelize.config.js",
-  "db:migrate": "npx sequelize-cli db:migrate --config src/sequelize.config.js"
+  "prestart": "./node_modules/.bin/sequelize-cli db:migrate --config src/sequelize.config.js",
+  "db:migrate": "./node_modules/.bin/sequelize-cli db:migrate --config src/sequelize.config.js"
 },
   "keywords": [],
   "author": "",
