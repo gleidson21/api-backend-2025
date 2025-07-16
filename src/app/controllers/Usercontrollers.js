@@ -1,51 +1,46 @@
-import User from "../models/User.js";
-class usercontroller {
-    async store(req, res) {
-        const { name, email, password_hash } = req.body
+// usercontrollers.js
 
-        const usertocreat = {
-            name,
-            email,
-            password_hash,
-        }
-        try {
-            const user = await User.create(usertocreat);
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs'; // Importe o bcryptjs
 
-            // Retorna 201 Created para sucesso na criação
-            // E não retorna o password_hash por segurança
-            return res.status(201).json({
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                // NÃO INCLUA user.password_hash AQUI!
-            });
-        } catch (error) {
-            console.error('Erro ao criar usuário:', error);
+class UserController {
+  async store(req, res) {
+    try {
+      // 1. O backend agora espera a chave `password`, igual ao frontend
+      const { name, email, password } = req.body;
 
-            // Tratamento de erro para e-mail duplicado (violação de unique constraint)
-            if (error.name === 'SequelizeUniqueConstraintError') {
-                return res.status(409).json({ error: 'Falha no cadastro', details: 'Este e-mail já está em uso.' });
-            }
+      // 2. Cria o hash da senha
+      const password_hash = await bcrypt.hash(password, 8);
 
-            // Erro genérico do servidor
-            return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
-        }
+      // 3. Usa o password_hash no objeto para criação do usuário
+      const user = await User.create({ name, email, password_hash });
+
+      return res.status(201).json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      });
+    } catch (error) {
+      // Se houver um erro de e-mail duplicado
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        return res.status(409).json({ error: 'Falha no cadastro', details: 'Este e-mail já está em uso.' });
+      }
+
+      // Erro genérico do servidor
+      return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
     }
-    async index(req, res) {
-        try {
-            // Busca todos os usuários. O 'attributes' é para não retornar a senha.
-            const users = await User.findAll({
-                attributes: ['id', 'name', 'email', 'created_at', 'updated_at']
-            });
+  }
 
-            return res.status(200).json(users);
-        } catch (error) {
-            console.error('Erro ao listar usuários:', error);
-            return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
-        }
-
-}
+  async index(req, res) {
+    try {
+      const users = await User.findAll({
+        attributes: ['id', 'name', 'email', 'created_at', 'updated_at']
+      });
+      return res.status(200).json(users);
+    } catch (error) {
+      return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
+    }
+  }
 }
 
-
- export default new usercontroller();
+export default new UserController();
