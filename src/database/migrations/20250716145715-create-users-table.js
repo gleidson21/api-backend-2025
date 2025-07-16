@@ -1,7 +1,7 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
-export const up = async (sequelize) => {
+export const up = async ({ context: sequelize }) => {
   const queryInterface = sequelize.getQueryInterface();
   const Sequelize = sequelize.constructor;
   
@@ -36,7 +36,7 @@ export const up = async (sequelize) => {
   });
 };
 
-export const down = async (sequelize) => {
+export const down = async ({ context: sequelize }) => {
   const queryInterface = sequelize.getQueryInterface();
   
   await queryInterface.dropTable('users');
