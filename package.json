@@ -2,10 +2,10 @@
   "name": "api-backend-2025",
   "version": "1.0.0",
   "description": "esse projeto eu desenvolvir sozinho",
-  "main": "node server.js",
+  "main": " server.js",
   "scripts": {
-    "dev": "nodemon",
-    "start": "node server.js",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
   "db:migrate": "npx sequelize-cli db:migrate",
   "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },
