@@ -1,6 +1,6 @@
 import usercontroller from "./app/controllers/Userscontrollers.js";
 import { Router } from "express";
-import SessionController from '../controllers/SessionController.js';
+import SessionController from '../src/app/controllers/SessionController.js'
 
 const router = new Router()
 
