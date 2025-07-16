@@ -45,6 +45,29 @@ class UserController {
     return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
   }
 }
+async delete(req, res) {
+    try {
+      const { id } = req.params; // Pega o ID da URL
+
+      if (!id) {
+        return res.status(400).json({ error: 'ID do usuário não fornecido.' });
+      }
+
+      const user = await User.findByPk(id); // Encontra o usuário pelo ID
+
+      if (!user) {
+        return res.status(404).json({ error: 'Usuário não encontrado.' });
+      }
+
+      await user.destroy(); // Deleta o usuário
+
+      return res.status(200).json({ message: 'Usuário deletado com sucesso.' });
+    } catch (error) {
+      console.error('Erro ao deletar usuário:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
+    }
+  }
+
 }
 
 export default new UserController();
