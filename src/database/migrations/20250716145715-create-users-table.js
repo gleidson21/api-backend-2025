@@ -1,7 +1,9 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
-export const up = async ({ queryInterface, Sequelize }) => {
+export const up = async (context) => {
+  const { queryInterface, Sequelize } = context;
+
   await queryInterface.createTable('users', {
     id: {
       primaryKey: true,
@@ -33,6 +35,8 @@ export const up = async ({ queryInterface, Sequelize }) => {
   });
 };
 
-export const down = async ({ queryInterface }) => {
+export const down = async (context) => {
+  const { queryInterface } = context;
+  
   await queryInterface.dropTable('users');
 };
