@@ -1,15 +1,13 @@
-import express from 'express'
+// src/app.js
+import express from 'express';
 import cors from 'cors';
-class App{
-    constructor(){
-        this.app = express()
-        this.middlewares()
-    }
-    middlewares(){
-        this.app.use(express.json())
-        this.app.use(cors());
-    }
 
-}
+const app = express();
 
-export default new App().app
+// Middleware para habilitar o Express a ler requisições em formato JSON
+app.use(express.json());
+
+// Middleware para habilitar o CORS
+app.use(cors());
+
+export default app;
