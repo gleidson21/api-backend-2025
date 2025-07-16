@@ -32,15 +32,16 @@ class UserController {
   }
 
   async index(req, res) {
-    try {
-      const users = await User.findAll({
-        attributes: ['id', 'name', 'email', 'created_at', 'updated_at']
-      });
-      return res.status(200).json(users);
-    } catch (error) {
-      return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
-    }
+  try {
+    // Removemos o filtro de atributos para evitar o erro 500
+    const users = await User.findAll();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error('Erro ao listar usuários:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
   }
+}
 }
 
 export default new UserController();
