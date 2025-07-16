@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node ./src/server.js",
-"    db:migrate": "npm exec -- sequelize-cli db:migrate",
+    "db:migrate": "npm exec -- sequelize-cli db:migrate",
     "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },
   "keywords": [],
