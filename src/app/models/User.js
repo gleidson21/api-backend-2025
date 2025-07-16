@@ -1,7 +1,7 @@
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model } from 'sequelize';
+
 class User extends Model {
   static init(sequelize) {
-    // biome-ignore lint/complexity/noThisInStatic: <explanation>
     super.init(
       {
         id: {
@@ -19,21 +19,23 @@ class User extends Model {
           allowNull: false,
           unique: true
         },
-
         password_hash: {
           type: DataTypes.STRING,
           allowNull: false
         }
       },
-
-
       {
         sequelize,
+        // --- OPÇÕES ADICIONADAS ---
+        tableName: 'users', // Nome da tabela no banco de dados.
+        modelName: 'User',
+        timestamps: true, // Adiciona as colunas 'createdAt' e 'updatedAt'.
+        underscored: true // Usa snake_case (ex: 'password_hash' e 'created_at').
+        // --- FIM DAS OPÇÕES ---
       }
-
-
-    )
-
+    );
+    return this;
   }
 }
-export default User
+
+export default User;
