@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Umzug } from 'umzug';
+import { SequelizeStorage } from 'umzug/sequelize';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Importa a configuração do banco de dados (se você tiver uma)
-// Ou use a string de conexão diretamente.
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
@@ -15,7 +15,6 @@ if (!connectionString) {
 }
 
 const sequelize = new Sequelize(connectionString, {
-  // Configurações do Sequelize, se houver
   dialectOptions: {
     ssl: {
       require: true,
@@ -23,9 +22,6 @@ const sequelize = new Sequelize(connectionString, {
     }
   }
 });
-
-// Acessa o sequelize-cli programaticamente
-const { Umzug, SequelizeStorage } = await import('umzug');
 
 const umzug = new Umzug({
   migrations: {
