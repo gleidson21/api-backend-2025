@@ -4,11 +4,11 @@
   "description": "esse projeto eu desenvolvir sozinho",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node migrate.js && node src/server.js",
-    "db:migrate": "npm exec -- sequelize-cli db:migrate",
-    "db:migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
-  },
+  "dev": "nodemon src/server.js",
+  "start": "node src/server.js",
+  "prestart": "npm exec -- sequelize-cli db:migrate --config src/sequelize.config.js",
+  "db:migrate": "npm exec -- sequelize-cli db:migrate --config src/sequelize.config.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
