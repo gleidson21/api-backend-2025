@@ -1,9 +1,10 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
-export const up = async (context) => {
-  const { queryInterface, Sequelize } = context;
-
+export const up = async (sequelize) => {
+  const queryInterface = sequelize.getQueryInterface();
+  const Sequelize = sequelize.constructor;
+  
   await queryInterface.createTable('users', {
     id: {
       primaryKey: true,
@@ -35,8 +36,8 @@ export const up = async (context) => {
   });
 };
 
-export const down = async (context) => {
-  const { queryInterface } = context;
+export const down = async (sequelize) => {
+  const queryInterface = sequelize.getQueryInterface();
   
   await queryInterface.dropTable('users');
 };
