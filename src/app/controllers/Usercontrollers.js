@@ -8,6 +8,9 @@ class UserController {
     try {
       // 1. O backend agora espera a chave `password`, igual ao frontend
       const { name, email, password } = req.body;
+      if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Dados inválidos', details: 'Todos os campos (nome, email, senha) são obrigatórios.' });
+    }
 
       // 2. Cria o hash da senha
       const password_hash = await bcrypt.hash(password, 8);
