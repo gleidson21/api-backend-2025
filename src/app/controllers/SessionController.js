@@ -26,8 +26,9 @@ class SessionController {
 
       // Gera um token de segurança para o usuário.
       // Substitua 'SEU_SECRET_JWT' por uma chave secreta forte.
+      // É altamente recomendável usar uma variável de ambiente para isso (process.env.APP_SECRET).
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, role: user.role }, // Inclua a role no token
         'SEU_SECRET_JWT',
         {
           expiresIn: '7d', // O token expira em 7 dias.
@@ -35,7 +36,7 @@ class SessionController {
       );
 
       return res.status(200).json({
-        user: { id: user.id, name: user.name, email: user.email },
+        user: { id: user.id, name: user.name, email: user.email, role: user.role }, // Inclua a role na resposta
         token,
       });
     } catch (e) {
@@ -44,4 +45,5 @@ class SessionController {
   }
 }
 
+// Exporta uma instância da classe SessionController
 export default new SessionController();
