@@ -1,5 +1,6 @@
-import Order from '../models/Order.js'; // Supondo que você tenha um modelo de Pedido
-// import PaymentGatewayService from '../services/PaymentGatewayService.js'; // Um serviço real para interagir com o gateway (ex: Stripe)
+// src/app/controllers/PaymentController.js
+import Order from '../models/Order.js'; // Caminho relativo correto para Order.js
+// import PaymentGatewayService from '../services/PaymentGatewayService.js';
 
 class PaymentController {
   async processPayment(req, res) {
@@ -11,10 +12,8 @@ class PaymentController {
         return res.status(400).json({ error: 'Dados de pagamento incompletos.' });
       }
 
-      // --- SIMULAÇÃO DE PROCESSAMENTO DE PAGAMENTO COM GATEWAY ---
       const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const paymentStatus = 'approved';
-      // --- FIM DA SIMULAÇÃO ---
 
       const order = await Order.create({
         userId,
@@ -51,3 +50,4 @@ class PaymentController {
 }
 
 export default new PaymentController();
+

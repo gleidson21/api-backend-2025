@@ -1,32 +1,33 @@
+src/app/models/Order.js
 import { Model, DataTypes } from 'sequelize';
 
 class Order extends Model {
   static init(sequelize) {
     super.init({
-      id: { // Se o ID dos pedidos também for UUID, ajuste aqui. Por padrão, deixei SERIAL (INTEGER)
-        type: DataTypes.INTEGER,
+      id: {
+        type: DataTypes.INTEGER, // Assumindo INTEGER para IDs de pedido (SERIAL no DB)
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      user_id: { // ID do usuário que fez o pedido
-        type: DataTypes.UUID, // ALTERADO: Deve ser UUID para corresponder ao ID do usuário
+      user_id: {
+        type: DataTypes.UUID, // IMPORTANTE: Este deve corresponder ao tipo do ID do seu modelo User.js
         allowNull: false,
       },
-      product_id: { // ID do produto comprado
-        type: DataTypes.INTEGER, // Assumindo que o ID do produto é INTEGER
+      product_id: {
+        type: DataTypes.INTEGER, // Assumindo INTEGER para IDs de produto
         allowNull: false,
       },
-      amount: { // Valor total do pedido
+      amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      transaction_id: { // ID da transação do gateway de pagamento (token)
+      transaction_id: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },
-      payment_status: { // Status do pagamento (aprovado, pendente, recusado)
+      payment_status: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'pending',
