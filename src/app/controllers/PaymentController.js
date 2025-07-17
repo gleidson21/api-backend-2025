@@ -1,4 +1,3 @@
-/ src/app/controllers/PaymentController.js
 import Order from '../models/Order.js'; // Supondo que você tenha um modelo de Pedido
 // import PaymentGatewayService from '../services/PaymentGatewayService.js'; // Um serviço real para interagir com o gateway (ex: Stripe)
 
@@ -13,26 +12,16 @@ class PaymentController {
       }
 
       // --- SIMULAÇÃO DE PROCESSAMENTO DE PAGAMENTO COM GATEWAY ---
-      // Em uma aplicação real, você faria algo como:
-      // const transactionResult = await PaymentGatewayService.charge(paymentToken, amount);
-      // if (!transactionResult.success) {
-      //   return res.status(400).json({ error: transactionResult.message });
-      // }
-
-      // Para fins de demonstração, vamos simular um sucesso
       const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const paymentStatus = 'approved';
       // --- FIM DA SIMULAÇÃO ---
 
-      // Salva os detalhes do pedido e da transação no seu banco de dados
-      // NUNCA salve o número do cartão aqui!
       const order = await Order.create({
         userId,
         productId,
         amount,
         transactionId,
         paymentStatus,
-        // Outros detalhes do pedido
       });
 
       return res.status(200).json({
@@ -48,11 +37,8 @@ class PaymentController {
     }
   }
 
-  // Método para listar transações/pedidos para o admin
   async listTransactions(req, res) {
     try {
-      // Apenas administradores devem acessar esta rota
-      // req.user.role deve ser 'admin' (já verificado pelo middleware isAdmin)
       const transactions = await Order.findAll({
         attributes: ['id', 'userId', 'productId', 'amount', 'transactionId', 'paymentStatus', 'createdAt']
       });

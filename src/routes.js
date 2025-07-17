@@ -24,7 +24,6 @@ router.get('/transactions', authenticateToken, isAdmin, paymentController.listTr
 // Rotas de Produto
 // Para criar, atualizar e deletar produtos, geralmente é necessário ser admin.
 // Para listar produtos (GET /products), pode ser público ou protegido, dependendo da sua necessidade.
-// Deixei a listagem pública para a loja funcionar, e as outras protegidas.
 router.post('/products', authenticateToken, isAdmin, productController.store); // Criar produto
 router.get('/products', productController.index); // Listar todos os produtos (acessível pela loja)
 router.get('/products/:id', productController.show); // Obter um produto específico
