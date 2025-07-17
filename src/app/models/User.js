@@ -14,6 +14,10 @@ class User extends Model {
           type: DataTypes.STRING,
           allowNull: false,
         },
+        role: {
+          type: DataTypes.ENUM('user', 'admin'),
+          defaultValue: 'user',
+        },
         email: {
           type: DataTypes.STRING,
           allowNull: false,
