@@ -6,24 +6,24 @@ export const up = async ({ context: sequelize }) => {
   const Sequelize = sequelize.constructor;
     await queryInterface.createTable('orders', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER, // Ou Sequelize.UUID se o ID do pedido for UUID
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, // ALTERADO: Deve ser UUID para corresponder ao ID do usuário
         allowNull: false,
         references: { model: 'users', key: 'id' }, // Chave estrangeira para a tabela users
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL', // Ou 'CASCADE' se quiser deletar pedidos ao deletar usuário
+        onDelete: 'SET NULL',
       },
       product_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER, // Assumindo que o ID do produto é INTEGER
         allowNull: false,
         references: { model: 'products', key: 'id' }, // Chave estrangeira para a tabela products
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL', // Ou 'CASCADE' se quiser deletar pedidos ao deletar produto
+        onDelete: 'SET NULL',
       },
       amount: {
         type: Sequelize.DECIMAL(10, 2),
