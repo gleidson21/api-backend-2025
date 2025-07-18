@@ -1,4 +1,4 @@
-// src/app.js
+/ src/app.js
 import express from 'express';
 import cors from 'cors';
 import path from 'path'; // Importa o módulo 'path'
@@ -18,12 +18,10 @@ app.use(express.json());
 app.use(cors());
 
 // --- NOVO: Middleware para servir arquivos estáticos (HTML, CSS, JS do frontend) ---
-// Ele vai procurar por arquivos na pasta 'public' na raiz do seu projeto.
-// Certifique-se de que seus arquivos HTML (login.html, loja.html, admin.html)
-// e os arquivos CSS/JS que eles usam estejam DENTRO desta pasta 'public'.
-app.use(express.static(path.join(__dirname, '..', 'public')));
-// O '..' antes de 'public' é porque 'app.js' está em 'src', então 'public'
-// está um nível acima na estrutura de pastas. Se 'public' estiver na mesma
-// pasta que 'src', use path.join(__dirname, 'public').
+// O caminho agora aponta diretamente para a pasta 'public' dentro de 'src'.
+app.use(express.static(path.join(__dirname, 'public')));
+//                                        ^^^^^^^
+//                                        Removido o '..'
 
 export default app;
+
