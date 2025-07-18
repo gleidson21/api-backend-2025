@@ -1,6 +1,8 @@
 // src/config/database.js
+import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas aqui também
+
 export default {
-    url: 'postgresql://api_backend_db_ivd7_user:cQS9IggPZYwQ8qoIHNxOSxy23C2fPn16@dpg-d1ruuqemcj7s7394je70-a.oregon-postgres.render.com/api_backend_db_ivd7',
+  url: process.env.DATABASE_URL, // AGORA USA A VARIÁVEL DE AMBIENTE
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
@@ -14,3 +16,4 @@ export default {
     underscoredAll: true
   }
 };
+
