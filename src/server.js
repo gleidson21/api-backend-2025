@@ -7,15 +7,26 @@ import app from './app.js'; // Importa a instância do Express já configurada d
 import userRoute from './routes.js'; // Importa suas rotas
 import './database/index.js'; // ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
 
+import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
+import express from 'express';
+import path from 'path'; // Importa o módulo 'path'
+import { fileURLToPath } from 'url'; // Importa para lidar com __dirname em módulos ES
+
+import app from './app.js'; // Importa a instância do Express já configurada de app.js
+import userRoute from './routes.js'; // Importa suas rotas
+import './database/index.js'; // ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
+
 // Definindo __filename e __dirname para módulos ES
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 try {
     // --- NOVO: Middleware para servir arquivos estáticos da pasta 'public' ---
-    // Como 'public' está dentro de 'src' (onde 'server.js' está), o caminho é 'public'.
-    app.use(express.static(path.join(__dirname, 'public')));
-    console.log('Servindo arquivos estáticos de src/public');
+    // Este caminho garante que ele sempre aponte para 'src/public' a partir da raiz do projeto.
+    // 'path.resolve()' cria um caminho absoluto.
+    app.use(express.static(path.resolve(__dirname, 'public')));
+    console.log(`Servindo arquivos estáticos de: ${path.resolve(__dirname, 'public')}`);
+
 
     // Configura para servir arquivos estáticos da pasta 'assets' (se ela existir na raiz do projeto)
     // Se 'assets' estiver na raiz do projeto e 'server.js' estiver em 'src',
