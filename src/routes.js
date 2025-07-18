@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import SessionController from './app/controllers/SessionController.js';
-import UsersController from './app/controllers/UsersController.js';
+import UsersController from './app/controllers/Userscontrollers.js';
 import ProductController from './app/controllers/ProductController.js';
 import PaymentController from './app/controllers/PaymentController.js';
 import authenticateToken from './app/middlewares/authenticateToken.js';
