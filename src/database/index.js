@@ -1,11 +1,10 @@
-// src/database/index.js
 import Sequelize from 'sequelize';
 import databaseConfig from '../config/database.js';
 
-// Importa todos os seus modelos com caminhos ajustados
-import User from '/app/models/User.js';    // Caminho ajustado
-import Product from '/app/models/Product.js'; // Caminho ajustado
-import Order from '/app/models/Order.js';     // Caminho ajustado
+// Importa todos os seus modelos com caminhos RELATIVOS
+import User from '../app/models/User.js';
+import Product from '../app/models/Product.js';
+import Order from '../app/models/order.js';
 
 // Coloque todos os seus modelos em um array
 const models = [User, Product, Order];

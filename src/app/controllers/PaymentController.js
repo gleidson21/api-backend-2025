@@ -1,5 +1,4 @@
-// src/app/controllers/PaymentController.js
-import Order from '/app/models/Order.js'; // Caminho ajustado para ser relativo à raiz 'src/'
+import Order from '../models/order.js';// Caminho relativo para Order.js
 
 class PaymentController {
   async processPayment(req, res) {
@@ -7,7 +6,7 @@ class PaymentController {
       const { paymentToken, productId, amount } = req.body;
       const userId = req.user.id; // Supondo que o ID do usuário venha do token de autenticação
 
-      if (!paymentToken || !productId || !!amount) { // Corrigido ! ! amount para !amount
+      if (!paymentToken || !productId || !amount) { // Corrigido para !amount
         return res.status(400).json({ error: 'Dados de pagamento incompletos.' });
       }
 
