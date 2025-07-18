@@ -1,4 +1,4 @@
-src/app/models/Order.js
+// src/app/models/Order.js
 import { Model, DataTypes } from 'sequelize';
 
 class Order extends Model {
@@ -11,7 +11,7 @@ class Order extends Model {
         primaryKey: true,
       },
       user_id: {
-        type: DataTypes.UUID, // IMPORTANTE: Este deve corresponder ao tipo do ID do seu modelo User.js
+        type: DataTypes.UUID, // IMPORTANTE: Este deve corresponder ao tipo do ID do seu modelo User.js (se User.id for UUID)
         allowNull: false,
       },
       product_id: {
