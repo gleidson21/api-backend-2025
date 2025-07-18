@@ -1,5 +1,4 @@
- src/app/controllers/ProductController.js
-import Product from '../models/Product.js';
+ import Product from '../models/Product.js';
 
 class ProductController {
   // Método para CRIAR um novo produto (POST /products)
