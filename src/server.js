@@ -1,5 +1,5 @@
 import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
-// import express from 'express'; // Esta linha deve estar REMOVIDA, como fizemos antes.
+import express from 'express'; // RE-ADICIONE ESTA LINHA!
 import path from 'path'; // Importa o módulo 'path'
 import { fileURLToPath } from 'url'; // Importa para lidar com __dirname em módulos ES
 
@@ -42,3 +42,4 @@ try {
     console.error('Detalhes do erro:', error); // Loga o objeto de erro completo
     process.exit(1); // Garante que o processo saia com um status de erro
 }
+
