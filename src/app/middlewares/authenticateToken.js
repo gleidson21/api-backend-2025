@@ -14,24 +14,22 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ error: 'Token de autenticação ausente.' });
   }
 
-  // --- VERIFICAÇÃO CRÍTICA: JWT_SECRET ---
   if (!process.env.JWT_SECRET) {
     console.error('ERRO CRÍTICO: Variável de ambiente JWT_SECRET não está definida!');
     return res.status(500).json({ error: 'Erro de configuração do servidor: JWT_SECRET não definido.' });
   }
-  // --- FIM DA VERIFICAÇÃO CRÍTICA ---
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      console.error('Erro na verificação do token JWT:', err.message);
-      // Se o token for inválido/expirado, retorna 403 Forbidden
+      console.error('Erro na verificação do token JWT:', err.message); // ESTA É A MENSAGEM QUE PRECISAMOS!
       return res.status(403).json({ error: 'Token de autenticação inválido ou expirado.' });
     }
-    req.user = user; // Anexa as informações do usuário ao objeto de requisição
+    req.user = user;
     console.log('Token JWT verificado com sucesso. req.user populado:', req.user);
     console.log('--- Fim do Middleware authenticateToken ---');
-    next(); // Continua para a próxima função middleware/rota
+    next();
   });
 }
 
 export default authenticateToken;
+
