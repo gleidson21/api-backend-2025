@@ -14,6 +14,13 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ error: 'Token de autenticação ausente.' });
   }
 
+  // --- VERIFICAÇÃO CRÍTICA: JWT_SECRET ---
+  if (!process.env.JWT_SECRET) {
+    console.error('ERRO CRÍTICO: Variável de ambiente JWT_SECRET não está definida!');
+    return res.status(500).json({ error: 'Erro de configuração do servidor: JWT_SECRET não definido.' });
+  }
+  // --- FIM DA VERIFICAÇÃO CRÍTICA ---
+
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       console.error('Erro na verificação do token JWT:', err.message);
