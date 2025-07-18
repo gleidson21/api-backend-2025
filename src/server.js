@@ -1,4 +1,4 @@
-mport 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
+import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
 import express from 'express'; // IMPORTANTE: Importa o Express diretamente aqui
 import app from './app.js'; // Importa a instância do Express já configurada de app.js
 import userRoute from './routes.js'; // Importa suas rotas
