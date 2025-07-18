@@ -3,8 +3,8 @@ import SessionController from './app/controllers/SessionController.js';
 import UsersController from './app/controllers/UsersController.js';
 import ProductController from './app/controllers/ProductController.js';
 import PaymentController from './app/controllers/PaymentController.js';
-import authenticateToken from './app/middlewares/authenticateToken.js'; // Certifique-se de que o caminho está correto
-import isAdmin from './app/middlewares/isAdmin.js'; // Certifique-se de que o caminho está correto
+import authenticateToken from './app/middlewares/authenticateToken.js';
+import isAdmin from './app/middlewares/isAdmin.js';
 
 const routes = new Router();
 
@@ -24,7 +24,6 @@ routes.put('/products/:id', authenticateToken, isAdmin, ProductController.update
 routes.delete('/products/:id', authenticateToken, isAdmin, ProductController.delete); // Deletar produto
 
 // Rotas de Pagamento
-// IMPORTANTE: O middleware authenticateToken DEVE estar aqui para popular req.user.id
 routes.post('/process-payment', authenticateToken, PaymentController.processPayment); // Processar pagamento
 routes.get('/transactions', authenticateToken, isAdmin, PaymentController.listTransactions); // Listar transações
 
