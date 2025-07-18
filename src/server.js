@@ -1,10 +1,10 @@
 import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
-import express from 'express'; // Importa o módulo 'express'
+import express from 'express'; // ESSENCIAL: Importa o módulo 'express' aqui!
 import path from 'path'; // Importa o módulo 'path'
 import { fileURLToPath } from 'url'; // Importa para lidar com __dirname em módulos ES
 
-import app from './app/app.js'; // IMPORTAÇÃO AJUSTADA: app.js está dentro de src/app/
-import userRoute from './routes.js'; // Importa suas rotas (verifique o caminho se routes.js não estiver em src/)
+import app from './app/app.js'; // Importa a instância do Express já configurada de app.js
+import userRoute from './routes.js'; // Importa suas rotas
 import './database/index.js'; // ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
 
 // Definindo __filename e __dirname para módulos ES
@@ -12,10 +12,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 try {
-    // --- Middleware para servir arquivos estáticos da RAIZ do projeto ---
-    // Como server.js está em 'src/', para acessar a raiz do projeto, subimos um nível ('..').
-    app.use(express.static(path.join(__dirname, '..')));
-    console.log(`Servindo arquivos estáticos de: ${path.join(__dirname, '..')}`);
+    // --- Middleware para servir arquivos estáticos da pasta 'public' ---
+    // Este é o caminho correto se 'public' está DENTRO de 'src'.
+    app.use(express.static(path.join(__dirname, 'public')));
+    console.log(`Servindo arquivos estáticos de: ${path.join(__dirname, 'public')}`);
 
 
     // Configura para servir arquivos estáticos da pasta 'assets' (se ela existir na raiz do projeto)
@@ -40,3 +40,4 @@ try {
     console.error('Detalhes do erro:', error); // Loga o objeto de erro completo
     process.exit(1); // Garante que o processo saia com um status de erro
 }
+
