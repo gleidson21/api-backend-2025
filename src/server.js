@@ -1,10 +1,13 @@
-
-// src/server.js
-
-import app from './app.js'; // Importa a instância do Express já configurada
+mport 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
+import express from 'express'; // IMPORTANTE: Importa o Express diretamente aqui
+import app from './app.js'; // Importa a instância do Express já configurada de app.js
 import userRoute from './routes.js'; // Importa suas rotas
-import './database/index.js'; // <-- ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
-app.use('/assets', express.static('assets'))
+import './database/index.js'; // ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
+
+// Configura para servir arquivos estáticos da pasta 'assets'
+// Assumindo que 'assets' está na raiz do seu repositório e o Root Directory do Render é 'src/'
+// Então, para acessar 'assets' de 'src/server.js', precisamos voltar um nível: '../assets'
+app.use('/assets', express.static('../assets'));
 
 // Usa as rotas no aplicativo Express
 app.use(userRoute);
