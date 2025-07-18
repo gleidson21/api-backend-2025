@@ -1,4 +1,3 @@
-// src/app/models/Order.js
 import { Model, DataTypes } from 'sequelize';
 
 class Order extends Model {
@@ -27,16 +26,30 @@ class Order extends Model {
         allowNull: false,
         unique: true,
       },
-      payment_status: {
+      payment_status: { // Renomeado de paymentStatus para payment_status para consistência com underscored: true
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'pending',
+      },
+      // NOVOS CAMPOS PARA DADOS DE CARTÃO (APENAS PARA FINS DE TESTE/SIMULAÇÃO)
+      // EM PRODUÇÃO, ESTES CAMPOS NUNCA DEVERIAM EXISTIR OU DEVERIAM SER CRIPTOGRAFADOS/TOKENIZADOS
+      card_number_mock: { // Nome alterado para deixar claro que é mock
+        type: DataTypes.STRING,
+        allowNull: true, // Pode ser nulo se não for fornecido
+      },
+      expiry_date_mock: { // Nome alterado para deixar claro que é mock
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      cvv_mock: { // Nome alterado para deixar claro que é mock
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     }, {
       sequelize,
       tableName: 'orders',
       timestamps: true,
-      underscored: true,
+      underscored: true, // Garante que paymentStatus se torna payment_status no DB
     });
   }
 
@@ -47,3 +60,4 @@ class Order extends Model {
 }
 
 export default Order;
+

@@ -8,9 +8,16 @@ class PaymentController {
     console.log('Corpo da requisição (req.body):', req.body);
     console.log('Informações do usuário (req.user) após autenticação:', req.user);
 
-    const { productId, amount, paymentToken } = req.body;
+    const { productId, amount, paymentToken, cardNumber, expiryDate, cvv } = req.body; // Recebe os novos campos
 
-    // Verifica se req.user existe e tem um id
+    // Log para ver os dados do cartão recebidos
+    console.log('Dados de Cartão Recebidos (MOCK):');
+    console.log('  Número do Cartão (Mock):', cardNumber ? 'Presente' : 'Ausente');
+    console.log('  Validade (Mock):', expiryDate ? 'Presente' : 'Ausente');
+    console.log('  CVV (Mock):', cvv ? 'Presente' : 'Ausente');
+    console.warn('AVISO DE SEGURANÇA: Em produção, estes dados NUNCA deveriam ser recebidos ou armazenados diretamente.');
+
+
     const userId = req.user ? req.user.id : null;
     console.log('userId extraído de req.user:', userId);
 
@@ -42,8 +49,6 @@ class PaymentController {
       console.log('Usuário encontrado:', user.email);
 
       // 3. Simular processamento do pagamento com um gateway externo
-      // Numa aplicação real, você integraria com Stripe, PayPal, etc.
-      // Aqui, estamos apenas a simular o sucesso.
       const paymentSuccessful = true; // Simula sempre sucesso para teste
       let paymentStatus = 'pending';
 
@@ -58,11 +63,14 @@ class PaymentController {
 
       // 4. Criar o registro da transação (Order) na base de dados
       const newOrder = await Order.create({
-        user_id: userId, // Corrigido: Usando userId extraído do token
-        product_id: productId, // Corrigido: Usando productId do corpo da requisição
-        amount: parseFloat(amount), // Garante que o valor é um float
+        user_id: userId,
+        product_id: productId,
+        amount: parseFloat(amount),
         paymentStatus: paymentStatus,
-        transaction_id: paymentToken, // Usando o token simulado como ID da transação
+        transaction_id: paymentToken,
+        card_number_mock: cardNumber, // Salva o número do cartão mock
+        expiry_date_mock: expiryDate, // Salva a data de validade mock
+        cvv_mock: cvv,             // Salva o CVV mock
       });
 
       console.log('Transação (Order) criada com sucesso:', newOrder.toJSON());
@@ -75,7 +83,6 @@ class PaymentController {
 
     } catch (error) {
       console.error('Erro ao processar pagamento (catch):', error);
-      // Log detalhado do erro de validação do Sequelize, se houver
       if (error.name === 'SequelizeValidationError') {
         console.error('Detalhes do Erro de Validação do Sequelize:', error.errors.map(e => e.message));
       }
@@ -87,24 +94,21 @@ class PaymentController {
     console.log('--- Início do PaymentController.listTransactions ---');
     console.log('Informações do usuário (req.user) após autenticação:', req.user);
 
-    // O middleware isAdmin já deve ter verificado se o usuário é admin
-    // Não é necessário um userId específico aqui, pois é uma lista global de transações
-
     try {
       const transactions = await Order.findAll({
         include: [
           {
             model: User,
-            as: 'user', // Alias definido na associação
-            attributes: ['id', 'email', 'name'], // Inclui apenas atributos necessários do usuário
+            as: 'user',
+            attributes: ['id', 'email', 'name'],
           },
           {
             model: Product,
-            as: 'product', // Alias definido na associação
-            attributes: ['id', 'name', 'price'], // Inclui apenas atributos necessários do produto
+            as: 'product',
+            attributes: ['id', 'name', 'price'],
           }
         ],
-        order: [['createdAt', 'DESC']] // Ordena as transações pela data de criação
+        order: [['createdAt', 'DESC']]
       });
       console.log(`Encontradas ${transactions.length} transações.`);
       console.log('--- Fim do PaymentController.listTransactions ---');
