@@ -1,49 +1,57 @@
-import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+
+// ATENÇÃO: ESTA É UMA CHAVE SECRETA HARDCODED APENAS PARA TESTE.
+// NUNCA USE ISTO EM PRODUÇÃO!
+// Use a mesma chave simples que configuramos no Render para teste.
+const JWT_SECRET_HARDCODED = 'TESTE_SECRETO_DO_GLEIDSON_123';
 
 class SessionController {
   async store(req, res) {
-    try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
 
-      if (!email || !password) {
-        return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
-      }
+    // Log para depuração na entrada do controlador
+    console.log('--- Início do SessionController.store (Login) ---');
+    console.log('Tentativa de login para o email:', email);
 
-      const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
 
-      if (!user) {
-        return res.status(401).json({ error: 'Usuário não encontrado.' });
-      }
-
-      // Compara a senha digitada com o hash salvo no banco de dados.
-      const passwordMatch = await bcrypt.compare(password, user.password_hash);
-
-      if (!passwordMatch) {
-        return res.status(401).json({ error: 'Senha incorreta.' });
-      }
-
-      // Gera um token de segurança para o usuário.
-      // Substitua 'SEU_SECRET_JWT' por uma chave secreta forte.
-      // É altamente recomendável usar uma variável de ambiente para isso (process.env.APP_SECRET).
-      const token = jwt.sign(
-        { id: user.id, email: user.email, role: user.role }, // Inclua a role no token
-        'SEU_SECRET_JWT',
-        {
-          expiresIn: '7d', // O token expira em 7 dias.
-        }
-      );
-
-      return res.status(200).json({
-        user: { id: user.id, name: user.name, email: user.email, role: user.role }, // Inclua a role na resposta
-        token,
-      });
-    } catch (e) {
-      return res.status(500).json({ error: 'Erro interno do servidor.' });
+    if (!user) {
+      console.log('Usuário não encontrado para o email:', email);
+      return res.status(401).json({ error: 'Usuário não encontrado.' });
     }
+
+    // Verifica a senha
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!passwordMatch) {
+      console.log('Senha incorreta para o email:', email);
+      return res.status(401).json({ error: 'Senha incorreta.' });
+    }
+
+    // Gerar o token JWT
+    // Usando a chave hardcoded para teste
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      JWT_SECRET_HARDCODED, // AQUI: Usando a chave hardcoded
+      { expiresIn: '7d' } // Token expira em 7 dias
+    );
+
+    console.log('Login bem-sucedido. Token JWT gerado para o usuário:', user.email);
+    console.log('--- Fim do SessionController.store (Login) ---');
+
+    return res.json({
+      message: 'Login bem-sucedido!',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   }
 }
 
-// Exporta uma instância da classe SessionController
 export default new SessionController();

@@ -1,5 +1,10 @@
 import jwt from 'jsonwebtoken';
 
+// ATENÇÃO: ESTA É UMA CHAVE SECRETA HARDCODED APENAS PARA TESTE.
+// NUNCA USE ISTO EM PRODUÇÃO!
+// Use a mesma chave simples que configuramos no Render para teste.
+const JWT_SECRET_HARDCODED = 'TESTE_SECRETO_DO_GLEIDSON_123';
+
 function authenticateToken(req, res, next) {
   console.log('--- Início do Middleware authenticateToken ---');
 
@@ -14,12 +19,8 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ error: 'Token de autenticação ausente.' });
   }
 
-  if (!process.env.JWT_SECRET) {
-    console.error('ERRO CRÍTICO: Variável de ambiente JWT_SECRET não está definida!');
-    return res.status(500).json({ error: 'Erro de configuração do servidor: JWT_SECRET não definido.' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  // Usando a chave hardcoded para teste
+  jwt.verify(token, JWT_SECRET_HARDCODED, (err, user) => {
     if (err) {
       console.error('Erro na verificação do token JWT:', err.message); // ESTA É A MENSAGEM QUE PRECISAMOS!
       return res.status(403).json({ error: 'Token de autenticação inválido ou expirado.' });
@@ -32,4 +33,3 @@ function authenticateToken(req, res, next) {
 }
 
 export default authenticateToken;
-
