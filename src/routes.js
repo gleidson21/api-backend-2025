@@ -1,38 +1,31 @@
-// src/routes.js
-import usercontroller from "./app/controllers/Userscontrollers.js";
-import authenticateToken from './app/middlewares/authenticateToken.js';
-import isAdmin from './app/middlewares/isAdmin.js';
-import { Router } from "express";
-import sessionController from './app/controllers/SessionController.js';
-import paymentController from './app/controllers/PaymentController.js'; // Importe o controlador de pagamento
-import productController from './app/controllers/ProductController.js'; // Importe o controlador de produto
+import { Router } from 'express';
+import SessionController from './app/controllers/SessionController.js';
+import UsersController from './app/controllers/UsersController.js';
+import ProductController from './app/controllers/ProductController.js';
+import PaymentController from './app/controllers/PaymentController.js';
+import authenticateToken from './app/middlewares/authenticateToken.js'; // Certifique-se de que o caminho está correto
+import isAdmin from './app/middlewares/isAdmin.js'; // Certifique-se de que o caminho está correto
 
-const router = new Router();
+const routes = new Router();
 
-// Rotas de Usuário e Autenticação
-router.post('/users', usercontroller.store); // Rota de cadastro de usuário
-router.post('/login', sessionController.store); // Rota de login
+// Rotas de Autenticação/Usuário
+routes.post('/register', UsersController.store); // Criar usuário
+routes.post('/login', SessionController.store); // Login
 
-// Rotas de Usuário Protegidas (requerem autenticação e isAdmin)
-router.delete('/users/:id', authenticateToken, isAdmin, usercontroller.delete);
-router.get('/users', authenticateToken, isAdmin, usercontroller.index);
-
-// Rotas de Pagamento (requerem autenticação)
-router.post('/process-payment', authenticateToken, paymentController.processPayment);
-router.get('/transactions', authenticateToken, isAdmin, paymentController.listTransactions);
+// Gerenciamento de Usuários (Apenas Admin)
+routes.get('/users', authenticateToken, isAdmin, UsersController.index); // Listar usuários
+routes.delete('/users/:id', authenticateToken, isAdmin, UsersController.delete); // Deletar usuário
 
 // Rotas de Produto
-// Para criar, atualizar e deletar produtos, geralmente é necessário ser admin.
-// Para listar produtos (GET /products), pode ser público ou protegido, dependendo da sua necessidade.
-router.post('/products', authenticateToken, isAdmin, productController.store); // Criar produto
-router.get('/products', productController.index); // Listar todos os produtos (acessível pela loja)
-router.get('/products/:id', productController.show); // Obter um produto específico
-router.put('/products/:id', authenticateToken, isAdmin, productController.update); // Atualizar produto
-router.delete('/products/:id', authenticateToken, isAdmin, productController.delete); // Deletar produto
+routes.post('/products', authenticateToken, isAdmin, ProductController.store); // Criar produto
+routes.get('/products', ProductController.index); // Listar produtos (público)
+routes.get('/products/:id', ProductController.show); // Obter produto único (público)
+routes.put('/products/:id', authenticateToken, isAdmin, ProductController.update); // Atualizar produto
+routes.delete('/products/:id', authenticateToken, isAdmin, ProductController.delete); // Deletar produto
 
-// Rota de teste da API
-router.get('/', (req, res) => {
-  return res.send('API está funcionando!');
-});
+// Rotas de Pagamento
+// IMPORTANTE: O middleware authenticateToken DEVE estar aqui para popular req.user.id
+routes.post('/process-payment', authenticateToken, PaymentController.processPayment); // Processar pagamento
+routes.get('/transactions', authenticateToken, isAdmin, PaymentController.listTransactions); // Listar transações
 
-export default router;
+export default routes;
