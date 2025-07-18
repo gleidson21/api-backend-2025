@@ -4,6 +4,7 @@
 import app from './app.js'; // Importa a instância do Express já configurada
 import userRoute from './routes.js'; // Importa suas rotas
 import './database/index.js'; // <-- ESSENCIAL: Importa e executa a conexão com o DB e inicializa os modelos!
+app.use('/assets', express.static('assets'))
 
 // Usa as rotas no aplicativo Express
 app.use(userRoute);
