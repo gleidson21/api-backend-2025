@@ -1,5 +1,4 @@
 import 'dotenv/config'; // Garante que as variáveis de ambiente sejam carregadas
-import express from 'express';
 import path from 'path'; // Importa o módulo 'path'
 import { fileURLToPath } from 'url'; // Importa para lidar com __dirname em módulos ES
 
